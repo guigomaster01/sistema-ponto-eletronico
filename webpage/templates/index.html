@@ -1,0 +1,113 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Principal</title>
+    
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body class="black-bg">
+    
+    <!-- Conteúdo da página -->
+    <main class="pres-main">
+        <content class="pres-content-div">
+            
+            <!-- Logo -->
+            <img class="pres-img" src="{% static 'img/defaultlogo.png' %}" alt="Seletos Lancamentos Logo">
+
+            <!-- Conteúdo -->
+            <div class="main-content-div">
+
+                <!-- Saudação -->
+                <h3 class="pres-title">
+                    <strong>Seja bem-vindo</strong> ao nosso<br>
+                    sistema de ponto!
+                </h3>
+                
+                <!-- Ponto eletrônico -->
+                <div class="ep-box">
+                    
+                    <form action="{% url 'webpage:register_time_employee' %}" method='post'>
+                        {% csrf_token %}
+
+                        <!-- Horário -->
+                        <!-- <span class="pres-input-span">
+                            <input type="time" id="horario" name="horario" min="5" max="5" placeholder="Digite um horário" class="pres-input" required>
+                        </span> -->
+                        <span class="pres-input-span">
+                            <input 
+                                type="text" 
+                                id="horario" 
+                                name="horario" 
+                                class="pres-input" 
+                                readonly
+                                required>
+                        </span>
+                      
+                        
+                        <!-- Funcionário -->
+                        <select name="employees" id="employees">
+                            {% for employee in employees %}
+                            <option value="{{ employee.pk }}">{{ employee.nome }} {{ employee.sobrenome }}</option>
+                            {% endfor %}
+                        </select>
+
+                            <!-- Botões -->
+                        <div class="buttons-main-div">
+                            <p>Manhã</p>
+                            <span class="button-row">
+                                    <input type="submit" name="entrada-manha" value="Entrada">
+                                    <input type="submit" name="saida-manha" value="Saida">
+                            </span>
+                            <p>Tarde</p>
+                            <span class="button-row">
+                                    <input type="submit" name="entrada-tarde" value="Entrada">
+                                    <input type="submit" name="saida-tarde" value="Saída">
+                            </span>
+                        </div>
+                    </form>
+                    
+                    
+
+                    
+                </div>
+
+                <!-- Veja mais -->
+                <a href="{% url 'webpage:homepage-view' %}" class="pres-link">
+                    <span class="pres-text">Veja mais</span>
+                </a>
+            </div>
+        </content>
+    </main>
+    
+    <!-- Others -->
+    <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const horarioInput = document.getElementById("horario");
+
+        function updateClock() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+
+            // Atualiza o valor do input no formato HH:MM:SS
+            horarioInput.value = `${hours}:${minutes}:${seconds}`;
+        }
+
+        // Atualiza o relógio imediatamente e a cada segundo
+        updateClock();
+        setInterval(updateClock, 1000);
+    });
+</script>
+    
+</body>
+</html>
